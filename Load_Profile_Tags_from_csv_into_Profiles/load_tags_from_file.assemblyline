@@ -1,0 +1,1090 @@
+<?xml version="1.0" encoding="UTF-8"?><MetamergeConfig Cycle="9" UUID="9065e877-50ad-40c0-b93c-edd8cca554b5" created="Fri Jul 29 09:09:13 CEST 2016" createdBy="root" main="load_tags_from_file" modified="Fri Jul 29 14:31:01 CEST 2016" modifiedBy="root" project="Item Skya" version="7.1.1">
+    <AssemblyLine name="load_tags_from_file">
+        <ModTime>1469795447232</ModTime>
+        <LogEnabled>true</LogEnabled>
+        <Settings>
+            <parameter name="ALPoolSettingsDialog">showALPoolSettings</parameter>
+            <parameter name="automapattributes">false</parameter>
+            <parameter name="createTombstones">false</parameter>
+            <parameter name="debug">false</parameter>
+            <parameter name="includeGlobalPrologs">true</parameter>
+            <parameter name="maxread"/>
+            <parameter name="nullBehaviorDialog">showNullBehavior</parameter>
+        </Settings>
+        <Hooks>
+            <Hook name="prolog0">
+                <Name>prolog0</Name>
+                <Script><![CDATA[//--------------------------------------------------------------
+// Load the message bundle if not done already.  Will set
+// variable messageBundle.
+//--------------------------------------------------------------
+load_message_bundle();
+]]></Script>
+                <Enabled>true</Enabled>
+                <DebugBreak>false</DebugBreak>
+            </Hook>
+        </Hooks>
+        <CheckpointConfig/>
+        <SandboxConfig/>
+        <SimulationConfig>
+            <SimulationStates>
+                <Component name="getProf_Key" state="Enabled"/>
+                <Component name="IF prof_key exists" state="Enabled"/>
+                <Component name="generateTagID" state="Enabled"/>
+                <Component name="write_entry" state="Simulated"/>
+                <Component name="read_entries_from_csv" state="Enabled"/>
+            </SimulationStates>
+            <ProxySettings/>
+        </SimulationConfig>
+        <LogConfig>
+            <Logger name="IDIFileRoller">
+                <parameter name="IDIFileRoller.Encoding">UTF-8</parameter>
+                <parameter name="IDIFileRoller.File">logs/LoadTagsFromFile.log</parameter>
+                <parameter name="IDIFileRoller.RollCount">5</parameter>
+                <parameter name="Pattern.ConversionPattern">%d{ISO8601} %-5p [%c] - %m%n</parameter>
+                <parameter name="com.ibm.di.log.appender">IDIFileRoller</parameter>
+                <parameter name="com.ibm.di.log.layout">Pattern</parameter>
+                <parameter name="com.ibm.di.log.level">INFO</parameter>
+                <parameter name="enabled">true</parameter>
+            </Logger>
+        </LogConfig>
+        <ContainerEF name="EntryFeedContainer">
+            <ModTime>1469795393298</ModTime>
+            <Connector name="read_entries_from_csv">
+                <InheritFrom>system:/Connectors/ibmdi.FileSystem</InheritFrom>
+                <ModTime>1469795393298</ModTime>
+                <ConnectorMode>Iterator</ConnectorMode>
+                <ConnectorState>Enabled</ConnectorState>
+                <Configuration>
+                    <InheritFrom>[parent]</InheritFrom>
+                    <ModTime>1469776345337</ModTime>
+                    <parameter name="debug">false</parameter>
+                    <parameter name="filePath">/opt/IBM/TDI/tdisol/tags_input.csv</parameter>
+                </Configuration>
+                <ComputeChanges>true</ComputeChanges>
+                <DeltaBehavior>0</DeltaBehavior>
+                <DeltaStrict>true</DeltaStrict>
+                <Parser>
+                    <InheritFrom>system:/Parsers/ibmdi.CSV</InheritFrom>
+                    <ModTime>1469780475282</ModTime>
+                    <parameter name="characterSet"/>
+                    <parameter name="csvColumns"><![CDATA[csvEmail
+csvTag]]></parameter>
+                    <parameter name="debug">false</parameter>
+                    <Schema name="Input">
+                        <InheritFrom>[parent]</InheritFrom>
+                    </Schema>
+                    <Schema name="Output">
+                        <InheritFrom>[parent]</InheritFrom>
+                    </Schema>
+                </Parser>
+                <AttributeMap name="Input">
+                    <InheritFrom>[parent]</InheritFrom>
+                    <ModTime>1469780627766</ModTime>
+                    <AttributeMapItem>
+                        <Name>csvEmail</Name>
+                        <Type>simple</Type>
+                        <Simple>csvEmail</Simple>
+                    </AttributeMapItem>
+                    <AttributeMapItem>
+                        <Name>csvTag</Name>
+                        <Type>simple</Type>
+                        <Simple>csvTag</Simple>
+                    </AttributeMapItem>
+                </AttributeMap>
+                <AttributeMap name="Output">
+                    <InheritFrom>[parent]</InheritFrom>
+                </AttributeMap>
+                <DeltaSettings>
+                    <ModTime>1469776170079</ModTime>
+                    <WhenToCommit>After every database operation</WhenToCommit>
+                    <Driver>CloudScape</Driver>
+                    <RowLocking>SERIALIZABLE</RowLocking>
+                    <ChangeDetectionMode>DETECT_ALL</ChangeDetectionMode>
+                </DeltaSettings>
+                <Schema name="Input">
+                    <InheritFrom>[parent]</InheritFrom>
+                    <ModTime>1469780487048</ModTime>
+                    <SchemaItem>
+                        <Name>conn.csvEmail</Name>
+                        <Syntax>java.lang.String</Syntax>
+                        <NativeSyntax>java.lang.String</NativeSyntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>conn.csvTag</Name>
+                        <Syntax>java.lang.String</Syntax>
+                        <NativeSyntax>java.lang.String</NativeSyntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>csvEmail</Name>
+                        <Syntax>java.lang.String</Syntax>
+                        <NativeSyntax>java.lang.String</NativeSyntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>csvTag</Name>
+                        <Syntax>java.lang.String</Syntax>
+                        <NativeSyntax>java.lang.String</NativeSyntax>
+                    </SchemaItem>
+                </Schema>
+                <Schema name="Output">
+                    <InheritFrom>[parent]</InheritFrom>
+                    <ModTime>1469780487050</ModTime>
+                    <SchemaItem>
+                        <Name>conn.csbTag</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>conn.csvEmail</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>conn.csvTag</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>conn.tag</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>conn.uid</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>csvEmail</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>csvTag</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                </Schema>
+                <LinkCriteria>
+                    <InheritFrom>[parent]</InheritFrom>
+                </LinkCriteria>
+                <Hooks>
+                    <InheritFrom>[parent]</InheritFrom>
+                    <Hook name="after_close">
+                        <Name>after_close</Name>
+                        <Script><![CDATA[var outFileName = eval_tdi_expression("{property.Java-Properties:java.io.tmpdir}/_tdi.rc");
+write_return_code(retCode, outFileName);]]></Script>
+                        <Enabled>true</Enabled>
+                        <DebugBreak>false</DebugBreak>
+                    </Hook>
+                    <Hook name="after_getnext">
+                        <Name>after_getnext</Name>
+                        <Script><![CDATA[itCounter = itCounter + 1;
+if((itCounter % 1000) == 0) {
+	console2("out", "disp_iteration_count", "" + new Date(), "" + itCounter);
+}]]></Script>
+                        <Enabled>true</Enabled>
+                        <DebugBreak>false</DebugBreak>
+                    </Hook>
+                    <Hook name="after_selectEntries">
+                        <Name>after_selectEntries</Name>
+                        <Script><![CDATA[var itCounter = 0;
+var successCounter = 0;
+var failCounter = 0;
+var duplicateCounter = 0;
+var lastSuccessfulDN = null;
+var retCode = 0;]]></Script>
+                        <Enabled>true</Enabled>
+                        <DebugBreak>false</DebugBreak>
+                    </Hook>
+                    <Hook name="get_fail">
+                        <Name>get_fail</Name>
+                        <Script>system.abortAssemblyLine(error.getString("message"));</Script>
+                        <Enabled>true</Enabled>
+                        <DebugBreak>false</DebugBreak>
+                    </Hook>
+                    <Hook name="get_ok">
+                        <Name>get_ok</Name>
+                        <Script/>
+                        <Enabled>false</Enabled>
+                        <DebugBreak>false</DebugBreak>
+                    </Hook>
+                </Hooks>
+                <CheckpointConfig/>
+                <SandboxConfig/>
+                <Reconnect>
+                    <InheritFrom>[parent]</InheritFrom>
+                    <ReconnectRules/>
+                </Reconnect>
+                <Operations/>
+                <OperationCarrierIsProperty>false</OperationCarrierIsProperty>
+                <PoolDefinition>
+                    <InheritFrom>[parent]</InheritFrom>
+                </PoolDefinition>
+                <PoolInstance>
+                    <Enabled>false</Enabled>
+                    <ExhaustedPoolBehavior>Wait</ExhaustedPoolBehavior>
+                </PoolInstance>
+                <InitializeOption>0</InitializeOption>
+            </Connector>
+        </ContainerEF>
+        <ContainerDF name="DataFlowContainer">
+            <ModTime>1469795447232</ModTime>
+            <Connector name="getProf_Key">
+                <InheritFrom>system:/Connectors/ibmdi.JDBC</InheritFrom>
+                <ModTime>1469795416479</ModTime>
+                <ConnectorMode>Lookup</ConnectorMode>
+                <ConnectorState>Enabled</ConnectorState>
+                <Configuration>
+                    <InheritFrom>[parent]</InheritFrom>
+                    <ModTime>1469782544957</ModTime>
+                    <parameter name="debug">false</parameter>
+                    <parameter name="jdbcDriver">@SUBSTITUTE{property.profiles:dbrepos_jdbc_driver}</parameter>
+                    <parameter name="jdbcExposeNullValues">false</parameter>
+                    <parameter name="jdbcLogin">@SUBSTITUTE{property.profiles:dbrepos_username}</parameter>
+                    <parameter name="jdbcPassword">@SUBSTITUTE{property.profiles:dbrepos_password}</parameter>
+                    <parameter name="jdbcPreparedStatement">true</parameter>
+                    <parameter name="jdbcSchema">EMPINST</parameter>
+                    <parameter name="jdbcSource">@SUBSTITUTE{property.profiles:dbrepos_jdbc_url}</parameter>
+                    <parameter name="jdbcTable">EMPLOYEE</parameter>
+                </Configuration>
+                <Parser>
+                    <InheritFrom>[parent]</InheritFrom>
+                    <ModTime>1469777692216</ModTime>
+                    <Schema name="Input">
+                        <InheritFrom>[parent]</InheritFrom>
+                        <ModTime>1469777692216</ModTime>
+                    </Schema>
+                    <Schema name="Output">
+                        <InheritFrom>[parent]</InheritFrom>
+                        <ModTime>1469777692216</ModTime>
+                    </Schema>
+                </Parser>
+                <AttributeMap name="Input">
+                    <InheritFrom>[parent]</InheritFrom>
+                    <ModTime>1469778290317</ModTime>
+                    <AttributeMapItem>
+                        <Name>lookedupPROF_KEY</Name>
+                        <Type>simple</Type>
+                        <Simple>PROF_KEY</Simple>
+                    </AttributeMapItem>
+                </AttributeMap>
+                <AttributeMap name="Output">
+                    <InheritFrom>[parent]</InheritFrom>
+                    <ModTime>1469777692216</ModTime>
+                </AttributeMap>
+                <DeltaSettings/>
+                <Schema name="Input">
+                    <InheritFrom>[parent]</InheritFrom>
+                    <ModTime>1469778850112</ModTime>
+                    <SchemaItem>
+                        <Name>PROF_ALTERNATE_LAST_NAME</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_BLOG_URL</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_BUILDING_IDENTIFIER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_CALENDAR_URL</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_COURTESY_TITLE</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_DEPARTMENT_NUMBER</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_DESCRIPTION</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_DISPLAY_NAME</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_EMPLOYEE_NUMBER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_EMPLOYEE_TYPE</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_EXPERIENCE</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_FAX_TELEPHONE_NUMBER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_FLOOR</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_FREEBUSY_URL</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_GIVEN_NAME</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_GROUPWARE_EMAIL</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_GUID</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_GW_EMAIL_LOWER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_IP_TELEPHONE_NUMBER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_ISO_COUNTRY_CODE</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_IS_MANAGER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_JOB_RESPONSIBILITIES</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_KEY</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_LAST_UPDATE</Name>
+                        <Syntax>java.sql.Timestamp</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_LOGIN</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_LOGIN_LOWER</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_MAIL</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_MAIL_LOWER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_MANAGER_UID</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_MANAGER_UID_LOWER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_MOBILE</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_MODE</Name>
+                        <Syntax>java.lang.Integer</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_NATIVE_FIRST_NAME</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_NATIVE_LAST_NAME</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_ORGANIZATION_IDENTIFIER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_PAGER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_PAGER_ID</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_PAGER_SERVICE_PROVIDER</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_PAGER_TYPE</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_PHYSICAL_DELIVERY_OFFICE</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_PREFERRED_FIRST_NAME</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_PREFERRED_LANGUAGE</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_PREFERRED_LAST_NAME</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_SECRETARY_UID</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_SHIFT</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_SOURCE_UID</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_SOURCE_URL</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_SRC_UID_LOWER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_STATE</Name>
+                        <Syntax>java.lang.Integer</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_SURNAME</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_TELEPHONE_NUMBER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_TIMEZONE</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_TITLE</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_TYPE</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_UID</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_UID_LOWER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_WORK_LOCATION</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>TENANT_KEY</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                </Schema>
+                <Schema name="Output">
+                    <InheritFrom>[parent]</InheritFrom>
+                    <ModTime>1469778850119</ModTime>
+                    <SchemaItem>
+                        <Name>PROF_ALTERNATE_LAST_NAME</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_BLOG_URL</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_BUILDING_IDENTIFIER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_CALENDAR_URL</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_COURTESY_TITLE</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_DEPARTMENT_NUMBER</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_DESCRIPTION</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_DISPLAY_NAME</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_EMPLOYEE_NUMBER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_EMPLOYEE_TYPE</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_EXPERIENCE</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_FAX_TELEPHONE_NUMBER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_FLOOR</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_FREEBUSY_URL</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_GIVEN_NAME</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_GROUPWARE_EMAIL</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_GUID</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_GW_EMAIL_LOWER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_IP_TELEPHONE_NUMBER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_ISO_COUNTRY_CODE</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_IS_MANAGER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_JOB_RESPONSIBILITIES</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_KEY</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_LAST_UPDATE</Name>
+                        <Syntax>java.sql.Timestamp</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_LOGIN</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_LOGIN_LOWER</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_MAIL</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_MAIL_LOWER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_MANAGER_UID</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_MANAGER_UID_LOWER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_MOBILE</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_MODE</Name>
+                        <Syntax>java.lang.Integer</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_NATIVE_FIRST_NAME</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_NATIVE_LAST_NAME</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_ORGANIZATION_IDENTIFIER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_PAGER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_PAGER_ID</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_PAGER_SERVICE_PROVIDER</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_PAGER_TYPE</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_PHYSICAL_DELIVERY_OFFICE</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_PREFERRED_FIRST_NAME</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_PREFERRED_LANGUAGE</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_PREFERRED_LAST_NAME</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_SECRETARY_UID</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_SHIFT</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_SOURCE_UID</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_SOURCE_URL</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_SRC_UID_LOWER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_STATE</Name>
+                        <Syntax>java.lang.Integer</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_SURNAME</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_TELEPHONE_NUMBER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_TIMEZONE</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_TITLE</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_TYPE</Name>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_UID</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_UID_LOWER</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>PROF_WORK_LOCATION</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>TENANT_KEY</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>countryCode</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>description</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>displayName</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>distinguishedName</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>employeeNumber</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>employeeTypeCode</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>faxNumber</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>givenName</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>givenNames</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>guid</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>isManager</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>key</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>lastUpdate</Name>
+                        <Syntax>java.sql.Timestamp</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>mobileNumber</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>officeName</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>orgId</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>preferredLanguage</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>sourceUrl</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>surname</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>surnames</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>sys_usrMode</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>sys_usrState</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>telephoneNumber</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>uid</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                    <SchemaItem>
+                        <Name>workLocationCode</Name>
+                        <Syntax>java.lang.String</Syntax>
+                    </SchemaItem>
+                </Schema>
+                <LinkCriteria>
+                    <InheritFrom>[parent]</InheritFrom>
+                    <ModTime>1469780527004</ModTime>
+                    <MatchAny>true</MatchAny>
+                    <AdvancedLinkMode>true</AdvancedLinkMode>
+                    <Script>ret.filter = "PROF_MAIL_LOWER = " + sql_quoted(work.getString("csvEmail").toLowerCase())</Script>
+                    <LinkCriteriaItem>
+                        <Key>1563598b371</Key>
+                        <Attribute>PROF_MAIL_LOWER</Attribute>
+                        <Operator>equals</Operator>
+                        <Value>$csvEmail</Value>
+                    </LinkCriteriaItem>
+                </LinkCriteria>
+                <Hooks>
+                    <InheritFrom>[parent]</InheritFrom>
+                    <ModTime>1469782440160</ModTime>
+                    <Hook name="default_fail">
+                        <InheritFrom>[no inheritance]</InheritFrom>
+                        <Name>default_fail</Name>
+                        <Script><![CDATA[task.logmsg("-----------------> Unknown error for user " + work.csvEmail)
+system.exitFlow()]]></Script>
+                        <Enabled>true</Enabled>
+                    </Hook>
+                    <Hook name="lookup_nomatch">
+                        <InheritFrom>[no inheritance]</InheritFrom>
+                        <Name>lookup_nomatch</Name>
+                        <Script><![CDATA[task.logmsg("-----------------> Can't find match on user " + work.csvEmail)
+system.exitFlow()]]></Script>
+                        <Enabled>true</Enabled>
+                    </Hook>
+                </Hooks>
+                <CheckpointConfig/>
+                <SandboxConfig/>
+                <Reconnect>
+                    <InheritFrom>[parent]</InheritFrom>
+                    <ReconnectRules/>
+                </Reconnect>
+                <Operations/>
+                <PoolDefinition>
+                    <InheritFrom>[parent]</InheritFrom>
+                </PoolDefinition>
+                <PoolInstance/>
+            </Connector>
+            <Branch name="IF prof_key exists">
+                <ModTime>1469795447232</ModTime>
+                <Script name="generateTagID">
+                    <ModTime>1469794766043</ModTime>
+                    <parameter name="script"><![CDATA[/*jslint bitwise: true, indent: 2, nomen: true, regexp: true, stupid: true*/
+(function () {
+  'use strict';
+
+  var exports = {};
+
+  exports.uuid4 = function () {
+    //// return uuid of form xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
+    var uuid = '', ii;
+    for (ii = 0; ii < 32; ii += 1) {
+      switch (ii) {
+      case 8:
+      case 20:
+        uuid += '-';
+        uuid += (Math.random() * 16 | 0).toString(16);
+        break;
+      case 12:
+        uuid += '-';
+        uuid += '4';
+        break;
+      case 16:
+        uuid += '-';
+        uuid += (Math.random() * 4 | 8).toString(16);
+        break;
+      default:
+        uuid += (Math.random() * 16 | 0).toString(16);
+      }
+    }
+    return uuid;
+  };
+
+  //// test
+//  task.logmsg(exports.uuid4())
+//  ret.value=exports.uuid4()
+	var newID = exports.uuid4()
+	work.setAttribute("strTagID", newID)
+	//work.setAttribute("$dn", newID);
+//  console.log(exports.uuid4());
+}());]]></parameter>
+                </Script>
+                <Connector name="write_entry">
+                    <InheritFrom>system:/Connectors/ibmdi.JDBC</InheritFrom>
+                    <ModTime>1469794781808</ModTime>
+                    <ConnectorMode>AddOnly</ConnectorMode>
+                    <ConnectorState>Enabled</ConnectorState>
+                    <Configuration>
+                        <InheritFrom>[parent]</InheritFrom>
+                        <parameter name="debug">false</parameter>
+                        <parameter name="jdbcDriver">@SUBSTITUTE{property.profiles:dbrepos_jdbc_driver}</parameter>
+                        <parameter name="jdbcLogin">@SUBSTITUTE{property.profiles:dbrepos_username}</parameter>
+                        <parameter name="jdbcPassword">@SUBSTITUTE{property.profiles:dbrepos_password}</parameter>
+                        <parameter name="jdbcPreparedStatement">true</parameter>
+                        <parameter name="jdbcSchema">EMPINST</parameter>
+                        <parameter name="jdbcSource">@SUBSTITUTE{property.profiles:dbrepos_jdbc_url}</parameter>
+                        <parameter name="jdbcTable">PEOPLE_TAG</parameter>
+                    </Configuration>
+                    <ComputeChanges>true</ComputeChanges>
+                    <DeltaBehavior>0</DeltaBehavior>
+                    <DeltaStrict>true</DeltaStrict>
+                    <Parser>
+                        <InheritFrom>[parent]</InheritFrom>
+                        <Schema name="Input">
+                            <InheritFrom>[parent]</InheritFrom>
+                        </Schema>
+                        <Schema name="Output">
+                            <InheritFrom>[parent]</InheritFrom>
+                        </Schema>
+                    </Parser>
+                    <AttributeMap name="Input">
+                        <InheritFrom>[parent]</InheritFrom>
+                    </AttributeMap>
+                    <AttributeMap name="Output">
+                        <InheritFrom>[parent]</InheritFrom>
+                        <ModTime>1469794781808</ModTime>
+                        <AttributeMapItem>
+                            <Name>PROF_SOURCE_KEY</Name>
+                            <Type>advanced</Type>
+                            <Modify>false</Modify>
+                            <Script>work.lookedupPROF_KEY</Script>
+                            <Simple>PROF_SOURCE_KEY</Simple>
+                        </AttributeMapItem>
+                        <AttributeMapItem>
+                            <Name>PROF_TAG</Name>
+                            <Type>advanced</Type>
+                            <Enabled>true</Enabled>
+                            <Add>true</Add>
+                            <Modify>true</Modify>
+                            <Script>work.csvTag</Script>
+                            <Simple>tag</Simple>
+                            <SubstitutionTemplate>null</SubstitutionTemplate>
+                        </AttributeMapItem>
+                        <AttributeMapItem>
+                            <Name>PROF_TAG_ID</Name>
+                            <Type>advanced</Type>
+                            <Enabled>true</Enabled>
+                            <Script>work.strTagID</Script>
+                            <Simple>PROF_TAG_ID</Simple>
+                        </AttributeMapItem>
+                        <AttributeMapItem>
+                            <Name>PROF_TARGET_KEY</Name>
+                            <Type>advanced</Type>
+                            <Script>work.lookedupPROF_KEY</Script>
+                            <Simple>PROF_TARGET_KEY</Simple>
+                        </AttributeMapItem>
+                        <AttributeMapItem>
+                            <Name>PROF_TYPE</Name>
+                            <Type>advanced</Type>
+                            <Enabled>false</Enabled>
+                            <Script>ret.value="general"</Script>
+                            <Simple>PROF_TYPE</Simple>
+                        </AttributeMapItem>
+                        <AttributeMapItem>
+                            <Name>TENANT_KEY</Name>
+                            <Type>advanced</Type>
+                            <Enabled>false</Enabled>
+                            <Script>ret.value="00000000-0000-0000-0000-040508202233"</Script>
+                            <Simple>TENANT_KEY</Simple>
+                        </AttributeMapItem>
+                    </AttributeMap>
+                    <DeltaSettings>
+                        <WhenToCommit>After every database operation</WhenToCommit>
+                        <Driver>CloudScape</Driver>
+                    </DeltaSettings>
+                    <Schema name="Input">
+                        <InheritFrom>[parent]</InheritFrom>
+                        <ModTime>1469781213644</ModTime>
+                        <SchemaItem>
+                            <Name>PROF_SOURCE_KEY</Name>
+                            <Syntax>java.lang.String</Syntax>
+                        </SchemaItem>
+                        <SchemaItem>
+                            <Name>PROF_TAG</Name>
+                            <Syntax>java.lang.String</Syntax>
+                        </SchemaItem>
+                        <SchemaItem>
+                            <Name>PROF_TAG_ID</Name>
+                            <Syntax>java.lang.String</Syntax>
+                        </SchemaItem>
+                        <SchemaItem>
+                            <Name>PROF_TARGET_KEY</Name>
+                            <Syntax>java.lang.String</Syntax>
+                        </SchemaItem>
+                        <SchemaItem>
+                            <Name>PROF_TYPE</Name>
+                            <Syntax>java.lang.String</Syntax>
+                        </SchemaItem>
+                        <SchemaItem>
+                            <Name>TENANT_KEY</Name>
+                            <Syntax>java.lang.String</Syntax>
+                        </SchemaItem>
+                    </Schema>
+                    <Schema name="Output">
+                        <InheritFrom>[parent]</InheritFrom>
+                        <ModTime>1469781213653</ModTime>
+                        <SchemaItem>
+                            <Name>PROF_SOURCE_KEY</Name>
+                            <Syntax>java.lang.String</Syntax>
+                        </SchemaItem>
+                        <SchemaItem>
+                            <Name>PROF_TAG</Name>
+                            <Syntax>java.lang.String</Syntax>
+                        </SchemaItem>
+                        <SchemaItem>
+                            <Name>PROF_TAG_ID</Name>
+                            <Syntax>java.lang.String</Syntax>
+                        </SchemaItem>
+                        <SchemaItem>
+                            <Name>PROF_TARGET_KEY</Name>
+                            <Syntax>java.lang.String</Syntax>
+                        </SchemaItem>
+                        <SchemaItem>
+                            <Name>PROF_TYPE</Name>
+                            <Syntax>java.lang.String</Syntax>
+                        </SchemaItem>
+                        <SchemaItem>
+                            <Name>TENANT_KEY</Name>
+                            <Syntax>java.lang.String</Syntax>
+                        </SchemaItem>
+                    </Schema>
+                    <LinkCriteria>
+                        <InheritFrom>[parent]</InheritFrom>
+                        <ModTime>1469780861171</ModTime>
+                        <AdvancedLinkMode>true</AdvancedLinkMode>
+                        <Script>ret.filter = "PROF_MAIL_LOWER = " + sql_quoted(work.getString("csvEmail").toLowerCase())</Script>
+                    </LinkCriteria>
+                    <Hooks>
+                        <InheritFrom>[parent]</InheritFrom>
+                        <ModTime>1469782596635</ModTime>
+                        <Hook name="addonly_fail">
+                            <InheritFrom>[no inheritance]</InheritFrom>
+                            <Name>addonly_fail</Name>
+                            <Script><![CDATA[log1("ERROR", "err_tag_load_failed", work.getString("csvEmail"));
+//system.skipEntry();
+system.exitFlow()]]></Script>
+                            <Enabled>true</Enabled>
+                            <DebugBreak>false</DebugBreak>
+                        </Hook>
+                    </Hooks>
+                    <CheckpointConfig/>
+                    <SandboxConfig/>
+                    <Reconnect>
+                        <InheritFrom>[parent]</InheritFrom>
+                        <ReconnectRules/>
+                    </Reconnect>
+                    <Operations/>
+                    <OperationCarrierIsProperty>false</OperationCarrierIsProperty>
+                    <PoolDefinition>
+                        <InheritFrom>[parent]</InheritFrom>
+                    </PoolDefinition>
+                    <PoolInstance>
+                        <Enabled>false</Enabled>
+                        <ExhaustedPoolBehavior>Wait</ExhaustedPoolBehavior>
+                    </PoolInstance>
+                    <InitializeOption>0</InitializeOption>
+                </Connector>
+                <Conditions>
+                    <ModTime>1469778392505</ModTime>
+                    <BranchCondition>
+                        <LeftHand>lookedupPROF_KEY</LeftHand>
+                        <Operator>hasValue</Operator>
+                        <RightHand/>
+                        <MatchAny>false</MatchAny>
+                    </BranchCondition>
+                </Conditions>
+                <MatchAny>false</MatchAny>
+                <Enabled>true</Enabled>
+                <Type>0</Type>
+            </Branch>
+        </ContainerDF>
+        <ThreadOptions/>
+        <Operations/>
+        <InitParams>
+            <Schema name="AssemblyLineInitParams"/>
+        </InitParams>
+    </AssemblyLine>
+</MetamergeConfig>
